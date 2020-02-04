@@ -6,6 +6,7 @@ variable "identifier" {
 variable "allocated_storage" {
   description = "The allocated storage in gigabytes"
   type        = string
+  default     = 25
 }
 
 variable "storage_type" {
@@ -17,7 +18,7 @@ variable "storage_type" {
 variable "storage_encrypted" {
   description = "Specifies whether the DB instance is encrypted"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "kms_key_id" {
@@ -53,11 +54,13 @@ variable "iam_database_authentication_enabled" {
 variable "engine" {
   description = "The database engine to use"
   type        = string
+  default     = "postgres"
 }
 
 variable "engine_version" {
   description = "The engine version to use"
   type        = string
+  default     = "10.6"
 }
 
 variable "final_snapshot_identifier" {
@@ -69,6 +72,7 @@ variable "final_snapshot_identifier" {
 variable "instance_class" {
   description = "The instance type of the RDS instance"
   type        = string
+  default     = "db.t3.medium"
 }
 
 variable "name" {
@@ -90,6 +94,7 @@ variable "password" {
 variable "port" {
   description = "The port on which the DB accepts connections"
   type        = string
+  default     = "5432"
 }
 
 variable "vpc_security_group_ids" {
@@ -117,7 +122,7 @@ variable "parameter_group_name" {
 }
 
 variable "option_group_name" {
-  description = "Name of the DB option group to associate"
+  description = "Name of the DB option group to associate. Setting this automatically disables option_group creation"
   type        = string
   default     = ""
 }
@@ -131,7 +136,7 @@ variable "availability_zone" {
 variable "multi_az" {
   description = "Specifies if the RDS instance is multi-AZ"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "iops" {
@@ -191,6 +196,7 @@ variable "apply_immediately" {
 variable "maintenance_window" {
   description = "The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi'. Eg: 'Mon:00:00-Mon:03:00'"
   type        = string
+  default     = "Mon:03:00-Mon:05:00"
 }
 
 variable "skip_final_snapshot" {
@@ -208,12 +214,13 @@ variable "copy_tags_to_snapshot" {
 variable "backup_retention_period" {
   description = "The days to retain backups for"
   type        = number
-  default     = 1
+  default     = 7
 }
 
 variable "backup_window" {
   description = "The daily time range (in UTC) during which automated backups are created if they are enabled. Example: '09:46-10:16'. Must not overlap with maintenance_window"
   type        = string
+  default     = "02:00-03:00"
 }
 
 variable "tags" {
@@ -233,7 +240,7 @@ variable "subnet_ids" {
 variable "family" {
   description = "The family of the DB parameter group"
   type        = string
-  default     = ""
+  default     = "postgres10"
 }
 
 variable "parameters" {
@@ -274,7 +281,7 @@ variable "create_db_parameter_group" {
 }
 
 variable "create_db_option_group" {
-  description = "(Optional) Create a database option group"
+  description = "Whether to create a database option group"
   type        = bool
   default     = true
 }
@@ -313,14 +320,6 @@ variable "timeouts" {
   }
 }
 
-variable "option_group_timeouts" {
-  description = "Define maximum timeout for deletion of `aws_db_option_group` resource"
-  type        = map(string)
-  default = {
-    delete = "15m"
-  }
-}
-
 variable "deletion_protection" {
   description = "The database can't be deleted when this value is set to true."
   type        = bool
@@ -349,10 +348,4 @@ variable "max_allocated_storage" {
   description = "Specifies the value for Storage Autoscaling"
   type        = number
   default     = 0
-}
-
-variable "ca_cert_identifier" {
-  description = "Specifies the identifier of the CA certificate for the DB instance"
-  type        = string
-  default     = "rds-ca-2019"
 }
