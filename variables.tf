@@ -349,3 +349,17 @@ variable "max_allocated_storage" {
   type        = number
   default     = 0
 }
+
+variable "option_group_timeouts" {
+  description = "Define maximum timeout for deletion of `aws_db_option_group` resource"
+  type        = map(string)
+  default = {
+    delete = "15m"
+  }
+}
+
+variable "ca_cert_identifier" {
+  description = "Specifies the identifier of the CA certificate for the DB instance"
+  type        = string
+  default     = "rds-ca-2019"
+}
