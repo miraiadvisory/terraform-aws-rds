@@ -1,4 +1,4 @@
-# Master and Replica RDS example for MySQL
+# Master and Replica RDS example for PostgreSQL
 
 Configuration in this directory creates set of RDS resources demonstrating master and replica in the same VPC.
 
@@ -32,8 +32,10 @@ No providers.
 |------|--------|---------|
 | <a name="module_master"></a> [master](#module\_master) | ../../ | n/a |
 | <a name="module_replica"></a> [replica](#module\_replica) | ../../ | n/a |
-| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4 |
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 2.0 |
+| <a name="module_security_group_region1"></a> [security\_group\_region1](#module\_security\_group\_region1) | terraform-aws-modules/security-group/aws | ~> 4 |
+| <a name="module_security_group_region2"></a> [security\_group\_region2](#module\_security\_group\_region2) | terraform-aws-modules/security-group/aws | ~> 4 |
+| <a name="module_vpc_region1"></a> [vpc\_region1](#module\_vpc\_region1) | terraform-aws-modules/vpc/aws | ~> 2.0 |
+| <a name="module_vpc_region2"></a> [vpc\_region2](#module\_vpc\_region2) | terraform-aws-modules/vpc/aws | ~> 2.0 |
 
 ## Resources
 

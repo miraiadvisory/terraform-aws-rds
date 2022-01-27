@@ -1,6 +1,6 @@
 locals {
   master_password      = var.create_db_instance && var.create_random_password ? random_password.master_password[0].result : var.password
-  db_subnet_group_name = var.replicate_source_db != null ? null : coalesce(var.db_subnet_group_name, module.db_subnet_group.db_subnet_group_id)
+  db_subnet_group_name = !var.cross_region_replica && var.replicate_source_db != null ? null : coalesce(var.db_subnet_group_name, module.db_subnet_group.db_subnet_group_id, var.identifier)
 
   parameter_group_name_id = var.create_db_parameter_group ? module.db_parameter_group.db_parameter_group_id : var.parameter_group_name
 
@@ -111,14 +111,15 @@ module "db_instance" {
   performance_insights_retention_period = var.performance_insights_retention_period
   performance_insights_kms_key_id       = var.performance_insights_enabled ? var.performance_insights_kms_key_id : null
 
-  replicate_source_db     = var.replicate_source_db
-  backup_retention_period = var.backup_retention_period
-  backup_window           = var.backup_window
-  max_allocated_storage   = var.max_allocated_storage
-  monitoring_interval     = var.monitoring_interval
-  monitoring_role_arn     = var.monitoring_role_arn
-  monitoring_role_name    = var.monitoring_role_name
-  create_monitoring_role  = var.create_monitoring_role
+  replicate_source_db         = var.replicate_source_db
+  backup_retention_period     = var.backup_retention_period
+  backup_window               = var.backup_window
+  max_allocated_storage       = var.max_allocated_storage
+  monitoring_interval         = var.monitoring_interval
+  monitoring_role_arn         = var.monitoring_role_arn
+  monitoring_role_name        = var.monitoring_role_name
+  monitoring_role_description = var.monitoring_role_description
+  create_monitoring_role      = var.create_monitoring_role
 
   character_set_name              = var.character_set_name
   timezone                        = var.timezone
@@ -129,7 +130,8 @@ module "db_instance" {
   deletion_protection      = var.deletion_protection
   delete_automated_backups = var.delete_automated_backups
 
-  s3_import = var.s3_import
+  restore_to_point_in_time = var.restore_to_point_in_time
+  s3_import                = var.s3_import
 
   tags = merge(var.tags, var.db_instance_tags)
 }

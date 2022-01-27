@@ -6,7 +6,7 @@ variable "identifier" {
 variable "allocated_storage" {
   description = "The allocated storage in gigabytes"
   type        = string
-  default     = 25
+  default     = null
 }
 
 variable "storage_type" {
@@ -31,6 +31,12 @@ variable "replicate_source_db" {
   description = "Specifies that this resource is a Replicate database, and to use this value as the source database. This correlates to the identifier of another Amazon RDS Database to replicate."
   type        = string
   default     = null
+}
+
+variable "cross_region_replica" {
+  description = "Specifies if the replica should be cross region. It allows the use of a subnet group in a region different than the master instance"
+  type        = bool
+  default     = false
 }
 
 variable "license_model" {
@@ -60,13 +66,13 @@ variable "domain_iam_role_name" {
 variable "engine" {
   description = "The database engine to use"
   type        = string
-  default     = "postgres"
+  default     = ""
 }
 
 variable "engine_version" {
   description = "The engine version to use"
   type        = string
-  default     = "10.6"
+  default     = null
 }
 
 variable "skip_final_snapshot" {
@@ -102,7 +108,7 @@ variable "final_snapshot_identifier_prefix" {
 variable "instance_class" {
   description = "The instance type of the RDS instance"
   type        = string
-  default     = "db.t3.medium"
+  default     = null
 }
 
 variable "name" {
@@ -114,6 +120,7 @@ variable "name" {
 variable "username" {
   description = "Username for the master DB user"
   type        = string
+  default     = null
 }
 
 variable "password" {
@@ -125,7 +132,7 @@ variable "password" {
 variable "port" {
   description = "The port on which the DB accepts connections"
   type        = string
-  default     = "5432"
+  default     = null
 }
 
 variable "vpc_security_group_ids" {
@@ -176,6 +183,12 @@ variable "monitoring_role_name" {
   default     = "rds-monitoring-role"
 }
 
+variable "monitoring_role_description" {
+  description = "Description of the monitoring IAM role"
+  type        = string
+  default     = null
+}
+
 variable "create_monitoring_role" {
   description = "Create IAM role with a defined name that permits RDS to send enhanced monitoring metrics to CloudWatch Logs."
   type        = bool
@@ -203,7 +216,7 @@ variable "apply_immediately" {
 variable "maintenance_window" {
   description = "The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi'. Eg: 'Mon:00:00-Mon:03:00'"
   type        = string
-  default     = "Mon:03:00-Mon:05:00"
+  default     = null
 }
 
 variable "backup_retention_period" {
@@ -215,7 +228,13 @@ variable "backup_retention_period" {
 variable "backup_window" {
   description = "The daily time range (in UTC) during which automated backups are created if they are enabled. Example: '09:46-10:16'. Must not overlap with maintenance_window"
   type        = string
-  default     = "02:00-03:00"
+  default     = null
+}
+
+variable "restore_to_point_in_time" {
+  description = "Restore to a point in time (MySQL is NOT supported)"
+  type        = map(string)
+  default     = null
 }
 
 variable "s3_import" {

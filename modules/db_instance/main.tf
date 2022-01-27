@@ -78,8 +78,22 @@ resource "aws_db_instance" "this" {
   deletion_protection      = var.deletion_protection
   delete_automated_backups = var.delete_automated_backups
 
+
+  dynamic "restore_to_point_in_time" {
+    for_each = var.restore_to_point_in_time != null ? [var.restore_to_point_in_time] : []
+
+    content {
+      restore_time                  = lookup(restore_to_point_in_time.value, "restore_time", null)
+      source_db_instance_identifier = lookup(restore_to_point_in_time.value, "source_db_instance_identifier", null)
+      source_dbi_resource_id        = lookup(restore_to_point_in_time.value, "source_dbi_resource_id", null)
+      use_latest_restorable_time    = lookup(restore_to_point_in_time.value, "use_latest_restorable_time", null)
+    }
+  }
+
+
   dynamic "s3_import" {
     for_each = var.s3_import != null ? [var.s3_import] : []
+
     content {
       source_engine         = "mysql"
       source_engine_version = s3_import.value.source_engine_version
@@ -100,6 +114,12 @@ resource "aws_db_instance" "this" {
     create = lookup(var.timeouts, "create", null)
     delete = lookup(var.timeouts, "delete", null)
     update = lookup(var.timeouts, "update", null)
+  }
+
+  lifecycle {
+    ignore_changes = [
+      latest_restorable_time
+    ]
   }
 }
 
@@ -201,6 +221,7 @@ resource "aws_iam_role" "enhanced_monitoring" {
 
   name               = var.monitoring_role_name
   assume_role_policy = data.aws_iam_policy_document.enhanced_monitoring.json
+  description        = var.monitoring_role_description
 
   tags = merge(
     {

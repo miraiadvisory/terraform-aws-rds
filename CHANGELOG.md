@@ -1,10 +1,58 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
-<a name="unreleased"></a>
-## [Unreleased]
+## [3.5.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v3.4.2...v3.5.0) (2022-01-12)
 
+
+### Features
+
+* Added `latest_restorable_time` to ignore_changes ([#356](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/356)) ([77902c2](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/77902c21414f24026d720e72068e589b3855fab8))
+
+### [3.4.2](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v3.4.1...v3.4.2) (2022-01-10)
+
+
+### Bug Fixes
+
+* update CI/CD process to align auto-release workflow ([#366](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/366)) ([e38aace](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/e38aaced17278567973dad4980fae8757d6a1265))
+
+# Changelog
+
+All notable changes to this project will be documented in this file
+
+## [3.4.1](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v3.4.0...v3.4.1) (2021-11-07)
+
+
+### Bug Fixes
+
+* update CI/CD process to use composite actions and auto-release workflow ([#361](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/361)) ([123ea2a](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/123ea2a136c913de0588d4820b291eb4d1d74d61))
+
+<a name="v3.4.0"></a>
+## [v3.4.0] - 2021-09-07
+
+- feat: Add new parameter monitoring_role_description ([#350](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/350))
+- docs: create_option_group -> create_db_option_group in README ([#348](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/348))
+
+
+<a name="v3.3.0"></a>
+## [v3.3.0] - 2021-07-07
+
+- feat: allow the creation of cross-region rds replicas ([#346](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/346))
+
+
+<a name="v3.2.0"></a>
+## [v3.2.0] - 2021-06-28
+
+- feat: Add restore_to_point_in_time support for databases ([#338](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/338))
+
+
+<a name="v3.1.0"></a>
+## [v3.1.0] - 2021-05-26
+
+- fix: add default values to allow for completely disabling module with bare minimum input ([#342](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/342))
+- chore: Update README.md to current version ([#339](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/339))
+- chore: update CI/CD to use stable `terraform-docs` release artifact and discoverable Apache2.0 license ([#332](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/332))
+- chore: Updated versions&comments in examples
 
 
 <a name="v3.0.0"></a>
@@ -147,18 +195,6 @@ All notable changes to this project will be documented in this file.
 ## [v2.15.0] - 2020-05-13
 
 - fix: Update minimum provider version to account for ca_cert_identifier ([#226](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/226))
-- Merge pull request [#206](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/206) from terraform-aws-modules/terraform-provider-githubfile-1584635272875570000
-- [ci skip] Create ".chglog/CHANGELOG.tpl.md".
-- Merge pull request [#205](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/205) from terraform-aws-modules/terraform-provider-githubfile-1584537150965422000
-- Merge pull request [#204](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/204) from terraform-aws-modules/terraform-provider-githubfile-1584537150965429000
-- [ci skip] Create "LICENSE".
-- [ci skip] Create ".pre-commit-config.yaml".
-- Merge pull request [#202](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/202) from terraform-aws-modules/terraform-provider-githubfile-1584537120161367000
-- Merge pull request [#200](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/200) from terraform-aws-modules/terraform-provider-githubfile-1584537120161669000
-- Merge pull request [#199](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/199) from terraform-aws-modules/terraform-provider-githubfile-1584537120162146000
-- [ci skip] Create ".gitignore".
-- [ci skip] Create ".editorconfig".
-- [ci skip] Create "Makefile".
 - Updated pre-commit-terraform
 - Updated pre-commit-terraform
 - Updated pre-commit-terraform
@@ -639,7 +675,6 @@ All notable changes to this project will be documented in this file.
 <a name="v1.1.0"></a>
 ## [v1.1.0] - 2017-10-18
 
-- Merge pull request [#16](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/16) from terraform-aws-modules/oracle_and_iam
 - Added iam_database_authentication_enabled and license_model model (fixed [#15](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/15) and [#14](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/14))
 
 
@@ -658,14 +693,11 @@ All notable changes to this project will be documented in this file.
 <a name="v1.0.6"></a>
 ## [v1.0.6] - 2017-10-12
 
-- Merge pull request [#9](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/9) from yamaszone/master
 - Set final_snapshot_identifier in Postgres RDS example
 - Merge branch 'master' of https://github.com/terraform-aws-modules/terraform-aws-rds
 - Updated README.md for MySQL RDS example
 - Updated README.md for Postgres RDS example
-- Merge pull request [#3](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/3) from jensendw/final_snapshot_identifier
 - fianl-snapshot_identifier should default to nothing
-- Merge pull request [#10](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/10) from yo61/update_readme
 - Add enhanced monitoring example to README, and add current contributors link
 - Merge branch 'master' into final_snapshot_identifier
 - Updated links using upstream path
@@ -683,7 +715,6 @@ All notable changes to this project will be documented in this file.
 <a name="v1.0.5"></a>
 ## [v1.0.5] - 2017-10-11
 
-- Merge pull request [#6](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/6) from yo61/enable_enhanced_monitoring
 - Tweak README.md examples
 - Add complete enhanced monitoring example
 - Add enhanced monitoring
@@ -692,7 +723,6 @@ All notable changes to this project will be documented in this file.
 <a name="v1.0.3"></a>
 ## [v1.0.3] - 2017-09-28
 
-- Merge pull request [#4](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/4) from fmartingr/encryption
 - Set example storage_encrypted value to false
 - Removed unused variable
 - Improved kms_key_id description
@@ -707,7 +737,6 @@ All notable changes to this project will be documented in this file.
 <a name="v1.0.2"></a>
 ## [v1.0.2] - 2017-09-21
 
-- Merge pull request [#2](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/2) from khosrow/master
 - db parameters can now be passed db_parameter_group mode
 
 
@@ -725,7 +754,11 @@ All notable changes to this project will be documented in this file.
 - Initial commit
 
 
-[Unreleased]: https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v3.4.0...HEAD
+[v3.4.0]: https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v3.3.0...v3.4.0
+[v3.3.0]: https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v3.2.0...v3.3.0
+[v3.2.0]: https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v3.1.0...v3.2.0
+[v3.1.0]: https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v3.0.0...v3.1.0
 [v3.0.0]: https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v2.35.0...v3.0.0
 [v2.35.0]: https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v2.34.0...v2.35.0
 [v2.34.0]: https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v2.33.0...v2.34.0

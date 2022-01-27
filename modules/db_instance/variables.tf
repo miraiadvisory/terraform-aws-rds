@@ -12,6 +12,7 @@ variable "identifier" {
 variable "allocated_storage" {
   description = "The allocated storage in gigabytes"
   type        = string
+  default     = null
 }
 
 variable "storage_type" {
@@ -65,16 +66,19 @@ variable "domain_iam_role_name" {
 variable "engine" {
   description = "The database engine to use"
   type        = string
+  default     = ""
 }
 
 variable "engine_version" {
   description = "The engine version to use"
   type        = string
+  default     = null
 }
 
 variable "instance_class" {
   description = "The instance type of the RDS instance"
   type        = string
+  default     = null
 }
 
 variable "name" {
@@ -86,16 +90,19 @@ variable "name" {
 variable "username" {
   description = "Username for the master DB user"
   type        = string
+  default     = null
 }
 
 variable "password" {
   description = "Password for the master DB user. Note that this may show up in logs, and it will be stored in the state file"
   type        = string
+  default     = null
 }
 
 variable "port" {
   description = "The port on which the DB accepts connections"
   type        = string
+  default     = null
 }
 
 variable "skip_final_snapshot" {
@@ -188,6 +195,12 @@ variable "monitoring_role_name" {
   default     = "rds-monitoring-role"
 }
 
+variable "monitoring_role_description" {
+  description = "Description of the monitoring IAM role"
+  type        = string
+  default     = null
+}
+
 variable "create_monitoring_role" {
   description = "Create IAM role with a defined name that permits RDS to send enhanced monitoring metrics to CloudWatch Logs."
   type        = bool
@@ -215,6 +228,7 @@ variable "apply_immediately" {
 variable "maintenance_window" {
   description = "The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi'. Eg: 'Mon:00:00-Mon:03:00'"
   type        = string
+  default     = null
 }
 
 variable "backup_retention_period" {
@@ -226,6 +240,7 @@ variable "backup_retention_period" {
 variable "backup_window" {
   description = "The daily time range (in UTC) during which automated backups are created if they are enabled. Example: '09:46-10:16'. Must not overlap with maintenance_window"
   type        = string
+  default     = null
 }
 
 variable "tags" {
@@ -312,6 +327,13 @@ variable "delete_automated_backups" {
 
 variable "s3_import" {
   description = "Restore from a Percona Xtrabackup in S3 (only MySQL is supported)"
+  type        = map(string)
+  default     = null
+}
+
+
+variable "restore_to_point_in_time" {
+  description = "Restore to a point in time (MySQL is NOT supported)"
   type        = map(string)
   default     = null
 }
