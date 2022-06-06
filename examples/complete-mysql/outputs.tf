@@ -18,6 +18,16 @@ output "db_instance_endpoint" {
   value       = module.db.db_instance_endpoint
 }
 
+output "db_instance_engine" {
+  description = "The database engine"
+  value       = module.db.db_instance_engine
+}
+
+output "db_instance_engine_version_actual" {
+  description = "The running version of the database"
+  value       = module.db.db_instance_engine_version_actual
+}
+
 output "db_instance_hosted_zone_id" {
   description = "The canonical hosted zone ID of the DB instance (to be used in a Route 53 Alias record)"
   value       = module.db.db_instance_hosted_zone_id
@@ -85,6 +95,11 @@ output "db_enhanced_monitoring_iam_role_arn" {
   value       = module.db.enhanced_monitoring_iam_role_arn
 }
 
+output "db_instance_cloudwatch_log_groups" {
+  description = "Map of CloudWatch log groups created and their attributes"
+  value       = module.db.db_instance_cloudwatch_log_groups
+}
+
 # Default
 output "db_default_instance_address" {
   description = "The address of the RDS instance"
@@ -104,6 +119,16 @@ output "db_default_instance_availability_zone" {
 output "db_default_instance_endpoint" {
   description = "The connection endpoint"
   value       = module.db_default.db_instance_endpoint
+}
+
+output "db_default_instance_engine" {
+  description = "The database engine"
+  value       = module.db_default.db_instance_engine
+}
+
+output "db_default_instance_engine_version" {
+  description = "The running version of the database"
+  value       = module.db_default.db_instance_engine_version_actual
 }
 
 output "db_default_instance_hosted_zone_id" {
@@ -166,4 +191,9 @@ output "db_default_parameter_group_id" {
 output "db_default_parameter_group_arn" {
   description = "The ARN of the db parameter group"
   value       = module.db_default.db_parameter_group_arn
+}
+
+output "db_default_cloudwatch_log_groups" {
+  description = "Map of CloudWatch log groups created and their attributes"
+  value       = module.db_default.db_instance_cloudwatch_log_groups
 }

@@ -18,6 +18,16 @@ output "db_instance_endpoint" {
   value       = module.db.db_instance_endpoint
 }
 
+output "db_instance_engine" {
+  description = "The database engine"
+  value       = module.db.db_instance_engine
+}
+
+output "db_instance_engine_version_actual" {
+  description = "The running version of the database"
+  value       = module.db.db_instance_engine_version_actual
+}
+
 output "db_instance_hosted_zone_id" {
   description = "The canonical hosted zone ID of the DB instance (to be used in a Route 53 Alias record)"
   value       = module.db.db_instance_hosted_zone_id
@@ -78,4 +88,9 @@ output "db_parameter_group_id" {
 output "db_parameter_group_arn" {
   description = "The ARN of the db parameter group"
   value       = module.db.db_parameter_group_arn
+}
+
+output "db_instance_cloudwatch_log_groups" {
+  description = "Map of CloudWatch log groups created and their attributes"
+  value       = module.db.db_instance_cloudwatch_log_groups
 }

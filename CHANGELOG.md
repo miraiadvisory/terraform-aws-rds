@@ -2,6 +2,66 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.4.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v4.3.0...v4.4.0) (2022-05-27)
+
+
+### Features
+
+* Add `engine` and `engine_version_actual` outputs ([#404](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/404)) ([00b9858](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/00b98589d2e8e37a24118887241d74d2b8d0715c))
+
+## [4.3.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v4.2.0...v4.3.0) (2022-04-27)
+
+
+### Features
+
+* Support `source_db_instance_automated_backups_arn` parameter in `restore_to_point_in_time` block ([#398](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/398)) ([559e6b1](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/559e6b11b76b428e8752e094366c36bea2c2c298))
+
+## [4.2.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v4.1.3...v4.2.0) (2022-03-12)
+
+
+### Features
+
+* Made it clear that we stand with Ukraine ([e8dfedb](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/e8dfedb8792dce34cd029fa46cf1bf071cfc7faa))
+
+### [4.1.3](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v4.1.2...v4.1.3) (2022-02-23)
+
+
+### Bug Fixes
+
+* Correct random password lifecycle by eagerly creating random password value ([#388](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/388)) ([b41a0a5](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/b41a0a5ef6d3b8ee590ec22507c3af85df985521))
+
+### [4.1.2](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v4.1.1...v4.1.2) (2022-02-18)
+
+
+### Bug Fixes
+
+* Correct usage of `password` and allow restored snapshots to set password, username, etc. ([#384](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/384)) ([81db512](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/81db51292cbbb1a23b3649814691498514fbd273))
+
+### [4.1.1](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v4.1.0...v4.1.1) (2022-02-17)
+
+
+### Bug Fixes
+
+* Remove check for `is_mssql` which is no longer valid ([#382](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/382)) ([f4481e6](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/f4481e6f4c21452840627b8cd229753229c04e5c))
+
+## [4.1.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v4.0.0...v4.1.0) (2022-02-17)
+
+
+### Features
+
+* Add support for managing CloudWatch log groups ([#380](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/380)) ([761fb7f](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/761fb7f5b8d7bb8ae99c54d8fa143c40d0772c0a))
+
+## [4.0.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v3.5.0...v4.0.0) (2022-02-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update default values for security posture improvement (#369)
+
+### Features
+
+* Update default values for security posture improvement ([#369](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/369)) ([9149ec1](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/9149ec147327fbe5a7675ac48e9e641b5d7ec6e1))
+
 ## [3.5.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v3.4.2...v3.5.0) (2022-01-12)
 
 
