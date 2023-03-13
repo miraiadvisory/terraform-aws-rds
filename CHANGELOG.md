@@ -2,6 +2,150 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.6.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.5.0...v5.6.0) (2023-02-17)
+
+
+### Features
+
+* Add support for permissions boundary on enhanced monitoring role ([#483](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/483)) ([b3e0aec](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/b3e0aec5efccbffd4e69d59bf7f7688a2c1f4ecf))
+
+## [5.5.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.4.2...v5.5.0) (2023-02-17)
+
+
+### Features
+
+* Add support for permissions boundary on enhanced monitoring role ([#482](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/482)) ([0500e12](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/0500e12acf5ab9b100fbe995915461df43e94b38))
+
+### [5.4.2](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.4.1...v5.4.2) (2023-02-12)
+
+
+### Bug Fixes
+
+* Update cloudwatch log group creation conditional ([#481](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/481)) ([927b714](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/927b714cdad3c8b1f8e28c3b0fb35f962916630f))
+
+### [5.4.1](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.4.0...v5.4.1) (2023-02-08)
+
+
+### Bug Fixes
+
+* Revert `ignore_changes` for instance `latest_restorable_time` ([#479](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/479)) ([b80ec03](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/b80ec0399348c889f54d30a11fa7c4f58f320ca5))
+
+## [5.4.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.3.1...v5.4.0) (2023-02-07)
+
+
+### Features
+
+* Add support for custom iam instance profile ([#473](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/473)) ([2795d5a](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/2795d5adb78643e77a2cd842670bbd4464d12003))
+
+### [5.3.1](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.3.0...v5.3.1) (2023-02-07)
+
+
+### Bug Fixes
+
+* Ignore changes to last_restorable_time ([#476](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/476)) ([acb3d51](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/acb3d51a6bd6494260e91d0621ff962712d1c32e))
+
+## [5.3.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.2.3...v5.3.0) (2023-01-28)
+
+
+### Features
+
+* Support blue/green updates ([#468](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/468)) ([af8c0ec](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/af8c0ec726ab84ef34a4a6cab0f1dc45a65ebdc5))
+
+### [5.2.3](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.2.2...v5.2.3) (2023-01-03)
+
+
+### Bug Fixes
+
+* Ensure that passing values for option group with PostgreSQL does not cause errors ([#467](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/467)) ([696acbb](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/696acbb237352988562f78b30897f29cfe8da58a))
+
+### [5.2.2](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.2.1...v5.2.2) (2022-12-20)
+
+
+### Bug Fixes
+
+* Default value of iops in main module ([#462](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/462)) ([d84b4b4](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/d84b4b4b4184cf2a32cf313b4fe294590cbdcd12))
+
+### [5.2.1](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.2.0...v5.2.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* Change RDS variable `iops` default value from `0` to `null` ([#456](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/456)) ([9c8d21f](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/9c8d21fc07d798203b1e96fa893e68d1fa04058e))
+
+## [5.2.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.1.1...v5.2.0) (2022-12-05)
+
+
+### Features
+
+* Add support for `storage_throughput` ([#453](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/453)) ([d81bf1f](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/d81bf1f351be2d4939f7aae4625f20cc047de7a5))
+
+### [5.1.1](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.1.0...v5.1.1) (2022-11-12)
+
+
+### Bug Fixes
+
+* Update CI configuration files to use latest version ([#438](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/438)) ([113a08b](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/113a08b0d4972b953b105879a487c71c9a542b3c))
+
+## [5.1.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.0.3...v5.1.0) (2022-09-11)
+
+
+### Features
+
+* Add support for `network_type` ([#431](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/431)) ([a277924](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/a27792484f9634462827baf2feb663a8800e2ce4))
+
+### [5.0.3](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.0.2...v5.0.3) (2022-08-15)
+
+
+### Bug Fixes
+
+* Fixed example of cross-region replica where KMS key was missing ([#428](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/428)) ([88418a7](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/88418a71bb6338cc176858cea926fade3a4eb6f8))
+
+### [5.0.2](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.0.1...v5.0.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* Replace deprecated name property in outputs ([#426](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/426)) ([c6e87d1](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/c6e87d1c47b0b556000719a969dd8ab62322085e))
+
+### [5.0.1](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.0.0...v5.0.1) (2022-07-25)
+
+
+### Bug Fixes
+
+* Cloudwatch Log Group deletion db_instance dependency ([#423](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/423)) ([e6351a3](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/e6351a3f2bc57db305be68c78cfdce65bbb82aaf))
+
+## [5.0.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v4.7.0...v5.0.0) (2022-07-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update Terraform and provider versions to v1.x and v4.x, mark password input as sensitive (#420)
+
+### Features
+
+* Update Terraform and provider versions to v1.x and v4.x, mark password input as sensitive ([#420](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/420)) ([808407d](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/808407dfb4944ca2701d3c9d25d8f4347238dddd))
+
+## [4.7.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v4.6.0...v4.7.0) (2022-07-14)
+
+
+### Features
+
+* Add support for `aws_db_instance_automated_backups_replication` ([#413](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/413)) ([f1e15a1](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/f1e15a16a30fa291a33ff9719cc72687124e96d0))
+
+## [4.6.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v4.5.0...v4.6.0) (2022-07-13)
+
+
+### Features
+
+* Support `name_prefix` in `iam_role.enhanced_monitoring` ([#418](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/418)) ([644d255](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/644d25528017bc6a7d0c73fbb9b91243ff51933b))
+
+## [4.5.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v4.4.0...v4.5.0) (2022-07-06)
+
+
+### Features
+
+* Add support for `identifier_prefix` ([#416](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/416)) ([125c426](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/125c426fc00cd1f2744189a30f9225778169cefb))
+
 ## [4.4.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v4.3.0...v4.4.0) (2022-05-27)
 
 

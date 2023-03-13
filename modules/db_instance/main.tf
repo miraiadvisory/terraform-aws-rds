@@ -3,6 +3,12 @@ locals {
 
   final_snapshot_identifier = var.skip_final_snapshot ? null : "${var.final_snapshot_identifier_prefix}-${var.identifier}-${try(random_id.snapshot_identifier[0].hex, "")}"
 
+  identifier        = var.use_identifier_prefix ? null : var.identifier
+  identifier_prefix = var.use_identifier_prefix ? "${var.identifier}-" : null
+
+  monitoring_role_name        = var.monitoring_role_use_name_prefix ? null : var.monitoring_role_name
+  monitoring_role_name_prefix = var.monitoring_role_use_name_prefix ? "${var.monitoring_role_name}-" : null
+
   # Replicas will use source metadata
   username       = var.replicate_source_db != null ? null : var.username
   password       = var.replicate_source_db != null ? null : var.password
@@ -26,7 +32,8 @@ resource "random_id" "snapshot_identifier" {
 resource "aws_db_instance" "this" {
   count = var.create ? 1 : 0
 
-  identifier = var.identifier
+  identifier        = local.identifier
+  identifier_prefix = local.identifier_prefix
 
   engine            = local.engine
   engine_version    = local.engine_version
@@ -44,15 +51,18 @@ resource "aws_db_instance" "this" {
   domain                              = var.domain
   domain_iam_role_name                = var.domain_iam_role_name
   iam_database_authentication_enabled = var.iam_database_authentication_enabled
+  custom_iam_instance_profile         = var.custom_iam_instance_profile
 
   vpc_security_group_ids = var.vpc_security_group_ids
   db_subnet_group_name   = var.db_subnet_group_name
   parameter_group_name   = var.parameter_group_name
   option_group_name      = var.option_group_name
+  network_type           = var.network_type
 
   availability_zone   = var.availability_zone
   multi_az            = var.multi_az
   iops                = var.iops
+  storage_throughput  = var.storage_throughput
   publicly_accessible = var.publicly_accessible
   ca_cert_identifier  = var.ca_cert_identifier
 
@@ -60,6 +70,15 @@ resource "aws_db_instance" "this" {
   auto_minor_version_upgrade  = var.auto_minor_version_upgrade
   apply_immediately           = var.apply_immediately
   maintenance_window          = var.maintenance_window
+
+  # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/blue-green-deployments.html
+  dynamic "blue_green_update" {
+    for_each = length(var.blue_green_update) > 0 ? [var.blue_green_update] : []
+
+    content {
+      enabled = try(blue_green_update.value.enabled, null)
+    }
+  }
 
   snapshot_identifier       = var.snapshot_identifier
   copy_tags_to_snapshot     = var.copy_tags_to_snapshot
@@ -72,7 +91,7 @@ resource "aws_db_instance" "this" {
 
   replicate_source_db     = var.replicate_source_db
   replica_mode            = var.replica_mode
-  backup_retention_period = var.backup_retention_period
+  backup_retention_period = length(var.blue_green_update) > 0 ? coalesce(var.backup_retention_period, 1) : var.backup_retention_period
   backup_window           = var.backup_window
   max_allocated_storage   = var.max_allocated_storage
   monitoring_interval     = var.monitoring_interval
@@ -111,25 +130,25 @@ resource "aws_db_instance" "this" {
 
   tags = var.tags
 
+  depends_on = [aws_cloudwatch_log_group.this]
+
   timeouts {
     create = lookup(var.timeouts, "create", null)
     delete = lookup(var.timeouts, "delete", null)
     update = lookup(var.timeouts, "update", null)
   }
 
-  lifecycle {
-    ignore_changes = [
-      latest_restorable_time
-    ]
-  }
+  # Note: do not add `latest_restorable_time` to `ignore_changes`
+  # https://github.com/terraform-aws-modules/terraform-aws-rds/issues/478
 }
 
 ################################################################################
 # CloudWatch Log Group
 ################################################################################
 
+# Log groups will not be created if using an identifier prefix
 resource "aws_cloudwatch_log_group" "this" {
-  for_each = toset([for log in var.enabled_cloudwatch_logs_exports : log if var.create && var.create_cloudwatch_log_group])
+  for_each = toset([for log in var.enabled_cloudwatch_logs_exports : log if var.create && var.create_cloudwatch_log_group && !var.use_identifier_prefix])
 
   name              = "/aws/rds/instance/${var.identifier}/${each.value}"
   retention_in_days = var.cloudwatch_log_group_retention_in_days
@@ -158,9 +177,11 @@ data "aws_iam_policy_document" "enhanced_monitoring" {
 resource "aws_iam_role" "enhanced_monitoring" {
   count = var.create_monitoring_role ? 1 : 0
 
-  name               = var.monitoring_role_name
-  assume_role_policy = data.aws_iam_policy_document.enhanced_monitoring.json
-  description        = var.monitoring_role_description
+  name                 = local.monitoring_role_name
+  name_prefix          = local.monitoring_role_name_prefix
+  assume_role_policy   = data.aws_iam_policy_document.enhanced_monitoring.json
+  description          = var.monitoring_role_description
+  permissions_boundary = var.monitoring_role_permissions_boundary
 
   tags = merge(
     {

@@ -2,56 +2,104 @@ provider "aws" {
   region = local.region
 }
 
+data "aws_availability_zones" "available" {}
+
 locals {
-  name   = "complete-mssql"
-  region = "eu-west-1"
+  name    = "complete-mssql"
+  region  = "eu-west-1"
+  region2 = "eu-central-1"
+
+  vpc_cidr = "10.0.0.0/16"
+  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+
   tags = {
-    Owner       = "user"
-    Environment = "dev"
+    Name       = local.name
+    Example    = local.name
+    Repository = "https://github.com/terraform-aws-modules/terraform-aws-rds"
   }
 }
 
 ################################################################################
-# Supporting Resources
+# RDS Module
 ################################################################################
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.0"
+module "db" {
+  source = "../../"
 
-  name = local.name
-  cidr = "10.99.0.0/18"
+  identifier = local.name
 
-  azs              = ["${local.region}a", "${local.region}b", "${local.region}c"]
-  public_subnets   = ["10.99.0.0/24", "10.99.1.0/24", "10.99.2.0/24"]
-  private_subnets  = ["10.99.3.0/24", "10.99.4.0/24", "10.99.5.0/24"]
-  database_subnets = ["10.99.7.0/24", "10.99.8.0/24", "10.99.9.0/24"]
+  engine               = "sqlserver-ex"
+  engine_version       = "15.00"
+  family               = "sqlserver-ex-15.0" # DB parameter group
+  major_engine_version = "15.00"             # DB option group
+  instance_class       = "db.t3.large"
 
-  create_database_subnet_group = true
+  allocated_storage     = 20
+  max_allocated_storage = 100
+
+  # Encryption at rest is not available for DB instances running SQL Server Express Edition
+  storage_encrypted = false
+
+  username = "complete_mssql"
+  port     = 1433
+
+  domain               = aws_directory_service_directory.demo.id
+  domain_iam_role_name = aws_iam_role.rds_ad_auth.name
+
+  multi_az               = false
+  db_subnet_group_name   = module.vpc.database_subnet_group
+  vpc_security_group_ids = [module.security_group.security_group_id]
+
+  maintenance_window              = "Mon:00:00-Mon:03:00"
+  backup_window                   = "03:00-06:00"
+  enabled_cloudwatch_logs_exports = ["error"]
+  create_cloudwatch_log_group     = true
+
+  backup_retention_period = 1
+  skip_final_snapshot     = true
+  deletion_protection     = false
+
+  performance_insights_enabled          = true
+  performance_insights_retention_period = 7
+  create_monitoring_role                = true
+  monitoring_interval                   = 60
+
+  options                   = []
+  create_db_parameter_group = false
+  license_model             = "license-included"
+  timezone                  = "GMT Standard Time"
+  character_set_name        = "Latin1_General_CI_AS"
 
   tags = local.tags
 }
 
-module "security_group" {
-  source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4.0"
+module "db_disabled" {
+  source = "../../"
 
-  name        = local.name
-  description = "Complete SqlServer example security group"
-  vpc_id      = module.vpc.vpc_id
+  identifier = "${local.name}-disabled"
 
-  # ingress
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = 1433
-      to_port     = 1433
-      protocol    = "tcp"
-      description = "SqlServer access from within VPC"
-      cidr_blocks = module.vpc.vpc_cidr_block
-    },
-  ]
+  create_db_instance        = false
+  create_db_parameter_group = false
+  create_db_option_group    = false
+}
 
-  tags = local.tags
+################################################################################
+# RDS Automated Backups Replication Module
+################################################################################
+
+provider "aws" {
+  alias  = "region2"
+  region = local.region2
+}
+
+module "db_automated_backups_replication" {
+  source = "../../modules/db_instance_automated_backups_replication"
+
+  source_db_instance_arn = module.db.db_instance_arn
+
+  providers = {
+    aws = aws.region2
+  }
 }
 
 ################################################################################
@@ -107,62 +155,55 @@ resource "aws_directory_service_directory" "demo" {
 }
 
 ################################################################################
-# RDS Module
+# Supporting Resources
 ################################################################################
 
-module "db" {
-  source = "../../"
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 3.0"
 
-  identifier = local.name
+  name = local.name
+  cidr = local.vpc_cidr
 
-  engine               = "sqlserver-ex"
-  engine_version       = "15.00.4153.1.v1"
-  family               = "sqlserver-ex-15.0" # DB parameter group
-  major_engine_version = "15.00"             # DB option group
-  instance_class       = "db.t3.large"
+  azs              = local.azs
+  public_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k)]
+  private_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 3)]
+  database_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 6)]
 
-  allocated_storage     = 20
-  max_allocated_storage = 100
-
-  username = "complete_mssql"
-  port     = 1433
-
-  domain               = aws_directory_service_directory.demo.id
-  domain_iam_role_name = aws_iam_role.rds_ad_auth.name
-
-  multi_az               = false
-  subnet_ids             = module.vpc.database_subnets
-  vpc_security_group_ids = [module.security_group.security_group_id]
-
-  maintenance_window              = "Mon:00:00-Mon:03:00"
-  backup_window                   = "03:00-06:00"
-  enabled_cloudwatch_logs_exports = ["error"]
-  create_cloudwatch_log_group     = true
-
-  backup_retention_period = 0
-  skip_final_snapshot     = true
-  deletion_protection     = false
-
-  performance_insights_enabled          = true
-  performance_insights_retention_period = 7
-  create_monitoring_role                = true
-  monitoring_interval                   = 60
-
-  options                   = []
-  create_db_parameter_group = false
-  license_model             = "license-included"
-  timezone                  = "GMT Standard Time"
-  character_set_name        = "Latin1_General_CI_AS"
+  create_database_subnet_group = true
 
   tags = local.tags
 }
 
-module "db_disabled" {
-  source = "../../"
+module "security_group" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 4.0"
 
-  identifier = "${local.name}-disabled"
+  name        = local.name
+  description = "Complete SqlServer example security group"
+  vpc_id      = module.vpc.vpc_id
 
-  create_db_instance        = false
-  create_db_parameter_group = false
-  create_db_option_group    = false
+  # ingress
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 1433
+      to_port     = 1433
+      protocol    = "tcp"
+      description = "SqlServer access from within VPC"
+      cidr_blocks = module.vpc.vpc_cidr_block
+    },
+  ]
+
+  # egress
+  egress_with_source_security_group_id = [
+    {
+      from_port                = 0
+      to_port                  = 0
+      protocol                 = -1
+      description              = "Allow outbound communication to Directory Services security group"
+      source_security_group_id = aws_directory_service_directory.demo.security_group_id
+    },
+  ]
+
+  tags = local.tags
 }

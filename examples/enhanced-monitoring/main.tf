@@ -2,54 +2,64 @@ provider "aws" {
   region = local.region
 }
 
+data "aws_availability_zones" "available" {}
+
 locals {
   name   = "enhanced-monitoring"
   region = "eu-west-1"
+
+  vpc_cidr = "10.0.0.0/16"
+  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+
   tags = {
-    Owner       = "user"
-    Environment = "dev"
+    Name       = local.name
+    Example    = local.name
+    Repository = "https://github.com/terraform-aws-modules/terraform-aws-rds"
   }
 }
 
 ################################################################################
-# Supporting Resources
+# RDS Module
 ################################################################################
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.0"
+module "db" {
+  source = "../../"
 
-  name = local.name
-  cidr = "10.99.0.0/18"
+  identifier = local.name
 
-  azs              = ["${local.region}a", "${local.region}b", "${local.region}c"]
-  public_subnets   = ["10.99.0.0/24", "10.99.1.0/24", "10.99.2.0/24"]
-  private_subnets  = ["10.99.3.0/24", "10.99.4.0/24", "10.99.5.0/24"]
-  database_subnets = ["10.99.7.0/24", "10.99.8.0/24", "10.99.9.0/24"]
+  # All available versions: http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_MySQL.html#MySQL.Concepts.VersionMgmt
+  engine               = "mysql"
+  engine_version       = "8.0"
+  family               = "mysql8.0" # DB parameter group
+  major_engine_version = "8.0"      # DB option group
+  instance_class       = "db.t4g.large"
 
-  create_database_subnet_group = true
+  allocated_storage     = 20
+  max_allocated_storage = 100
 
-  tags = local.tags
-}
+  db_name  = "completeMysql"
+  username = "complete_mysql"
+  port     = 3306
 
-module "security_group" {
-  source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4.0"
+  multi_az               = true
+  db_subnet_group_name   = module.vpc.database_subnet_group
+  vpc_security_group_ids = [module.security_group.security_group_id]
 
-  name        = local.name
-  description = "Enhanced monitoring MySQL example security group"
-  vpc_id      = module.vpc.vpc_id
+  maintenance_window              = "Mon:00:00-Mon:03:00"
+  backup_window                   = "03:00-06:00"
+  enabled_cloudwatch_logs_exports = ["audit", "general"]
 
-  # ingress
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = 3306
-      to_port     = 3306
-      protocol    = "tcp"
-      description = "MySQL access from within VPC"
-      cidr_blocks = module.vpc.vpc_cidr_block
-    },
-  ]
+  backup_retention_period = 0
+  skip_final_snapshot     = true
+  deletion_protection     = false
+
+  # Enhanced monitoring
+  monitoring_interval = 30
+  monitoring_role_arn = aws_iam_role.rds_enhanced_monitoring.arn
+
+  performance_insights_enabled          = true
+  performance_insights_retention_period = 7
+  create_monitoring_role                = true
 
   tags = local.tags
 }
@@ -84,47 +94,44 @@ data "aws_iam_policy_document" "rds_enhanced_monitoring" {
 }
 
 ################################################################################
-# RDS Module
+# Supporting Resources
 ################################################################################
 
-module "db" {
-  source = "../../"
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 3.0"
 
-  identifier = local.name
+  name = local.name
+  cidr = local.vpc_cidr
 
-  # All available versions: http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_MySQL.html#MySQL.Concepts.VersionMgmt
-  engine               = "mysql"
-  engine_version       = "8.0.27"
-  family               = "mysql8.0" # DB parameter group
-  major_engine_version = "8.0"      # DB option group
-  instance_class       = "db.t4g.large"
+  azs              = local.azs
+  public_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k)]
+  private_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 3)]
+  database_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 6)]
 
-  allocated_storage     = 20
-  max_allocated_storage = 100
+  create_database_subnet_group = true
 
-  db_name  = "completeMysql"
-  username = "complete_mysql"
-  port     = 3306
+  tags = local.tags
+}
 
-  multi_az               = true
-  subnet_ids             = module.vpc.database_subnets
-  vpc_security_group_ids = [module.security_group.security_group_id]
+module "security_group" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 4.0"
 
-  maintenance_window              = "Mon:00:00-Mon:03:00"
-  backup_window                   = "03:00-06:00"
-  enabled_cloudwatch_logs_exports = ["audit", "general"]
+  name        = local.name
+  description = "Enhanced monitoring MySQL example security group"
+  vpc_id      = module.vpc.vpc_id
 
-  backup_retention_period = 0
-  skip_final_snapshot     = true
-  deletion_protection     = false
-
-  # Enhanced monitoring
-  monitoring_interval = 30
-  monitoring_role_arn = aws_iam_role.rds_enhanced_monitoring.arn
-
-  performance_insights_enabled          = true
-  performance_insights_retention_period = 7
-  create_monitoring_role                = true
+  # ingress
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 3306
+      to_port     = 3306
+      protocol    = "tcp"
+      description = "MySQL access from within VPC"
+      cidr_blocks = module.vpc.vpc_cidr_block
+    },
+  ]
 
   tags = local.tags
 }

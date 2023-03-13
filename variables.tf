@@ -3,6 +3,18 @@ variable "identifier" {
   type        = string
 }
 
+variable "instance_use_identifier_prefix" {
+  description = "Determines whether to use `identifier` as is or create a unique identifier beginning with `identifier` as the specified prefix"
+  type        = bool
+  default     = false
+}
+
+variable "custom_iam_instance_profile" {
+  description = "RDS custom iam instance profile"
+  type        = string
+  default     = null
+}
+
 variable "allocated_storage" {
   description = "The allocated storage in gigabytes"
   type        = string
@@ -10,8 +22,14 @@ variable "allocated_storage" {
 }
 
 variable "storage_type" {
-  description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD). The default is 'io1' if iops is specified, 'gp2' if not"
+  description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), 'gp3' (new generation of general purpose SSD), or 'io1' (provisioned IOPS SSD). The default is 'io1' if iops is specified, 'gp2' if not. If you specify 'io1' or 'gp3' , you must also include a value for the 'iops' parameter"
   type        = string
+  default     = null
+}
+
+variable "storage_throughput" {
+  description = "Storage throughput value for the DB instance. See `notes` for limitations regarding this variable for `gp3`"
+  type        = number
   default     = null
 }
 
@@ -22,7 +40,7 @@ variable "storage_encrypted" {
 }
 
 variable "kms_key_id" {
-  description = "The ARN for the KMS encryption key. If creating an encrypted replica, set this to the destination KMS ARN. If storage_encrypted is set to true and kms_key_id is not specified the default KMS key created in your account will be used"
+  description = "The ARN for the KMS encryption key. If creating an encrypted replica, set this to the destination KMS ARN. If storage_encrypted is set to true and kms_key_id is not specified the default KMS key created in your account will be used. Be sure to use the full ARN, not a key alias."
   type        = string
   default     = null
 }
@@ -118,9 +136,13 @@ variable "username" {
 }
 
 variable "password" {
-  description = "Password for the master DB user. Note that this may show up in logs, and it will be stored in the state file"
+  description = <<EOF
+  Password for the master DB user. Note that this may show up in logs, and it will be stored in the state file.
+  The password provided will not be used if the variable create_random_password is set to true.
+  EOF
   type        = string
   default     = null
+  sensitive   = true
 }
 
 variable "port" {
@@ -148,9 +170,9 @@ variable "multi_az" {
 }
 
 variable "iops" {
-  description = "The amount of provisioned IOPS. Setting this implies a storage_type of 'io1'"
+  description = "The amount of provisioned IOPS. Setting this implies a storage_type of 'io1' or `gp3`. See `notes` for limitations regarding this variable for `gp3`"
   type        = number
-  default     = 0
+  default     = null
 }
 
 variable "publicly_accessible" {
@@ -177,6 +199,12 @@ variable "monitoring_role_name" {
   default     = "rds-monitoring-role"
 }
 
+variable "monitoring_role_use_name_prefix" {
+  description = "Determines whether to use `monitoring_role_name` as is or create a unique identifier beginning with `monitoring_role_name` as the specified prefix"
+  type        = bool
+  default     = false
+}
+
 variable "monitoring_role_description" {
   description = "Description of the monitoring IAM role"
   type        = string
@@ -187,6 +215,12 @@ variable "create_monitoring_role" {
   description = "Create IAM role with a defined name that permits RDS to send enhanced monitoring metrics to CloudWatch Logs"
   type        = bool
   default     = false
+}
+
+variable "monitoring_role_permissions_boundary" {
+  description = "ARN of the policy that is used to set the permissions boundary for the monitoring IAM role"
+  type        = string
+  default     = null
 }
 
 variable "allow_major_version_upgrade" {
@@ -211,6 +245,12 @@ variable "maintenance_window" {
   description = "The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi'. Eg: 'Mon:00:00-Mon:03:00'"
   type        = string
   default     = null
+}
+
+variable "blue_green_update" {
+  description = "Enables low-downtime updates using RDS Blue/Green deployments."
+  type        = map(string)
+  default     = {}
 }
 
 variable "backup_retention_period" {
@@ -421,7 +461,7 @@ variable "performance_insights_enabled" {
 }
 
 variable "performance_insights_retention_period" {
-  description = "The amount of time in days to retain Performance Insights data. Either 7 (7 days) or 731 (2 years)"
+  description = "The amount of time in days to retain Performance Insights data. Valid values are `7`, `731` (2 years) or a multiple of `31`"
   type        = number
   default     = 7
 }
@@ -468,6 +508,12 @@ variable "random_password_length" {
   description = "Length of random password to create"
   type        = number
   default     = 16
+}
+
+variable "network_type" {
+  description = "The type of network stack to use"
+  type        = string
+  default     = null
 }
 
 ################################################################################
