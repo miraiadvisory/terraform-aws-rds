@@ -84,6 +84,11 @@ output "db_parameter_group_arn" {
   value       = module.db.db_parameter_group_arn
 }
 
+output "db_enhanced_monitoring_iam_role_arn" {
+  description = "The Amazon Resource Name (ARN) specifying the monitoring role"
+  value       = module.db.enhanced_monitoring_iam_role_arn
+}
+
 output "db_instance_cloudwatch_log_groups" {
   description = "Map of CloudWatch log groups created and their attributes"
   value       = module.db.db_instance_cloudwatch_log_groups
@@ -92,4 +97,9 @@ output "db_instance_cloudwatch_log_groups" {
 output "db_instance_master_user_secret_arn" {
   description = "The ARN of the master user secret (Only available when manage_master_user_password is set to true)"
   value       = module.db.db_instance_master_user_secret_arn
+}
+
+output "db_instance_role_associations" {
+  description = "The outputs for the role associations"
+  value       = module.db.db_instance_role_associations
 }

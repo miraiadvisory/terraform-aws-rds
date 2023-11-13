@@ -2,6 +2,59 @@
 
 All notable changes to this project will be documented in this file.
 
+## [6.2.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.1.1...v6.2.0) (2023-10-23)
+
+
+### Features
+
+* Add `db_instance_role_association` functionality ([#508](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/508)) ([ed027d7](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/ed027d7daa2a03df909479c3becc6bb621b7193f))
+
+### [6.1.1](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.1.0...v6.1.1) (2023-08-05)
+
+
+### Bug Fixes
+
+* Change `allocated_storage` type from string to number ([#507](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/507)) ([5939ddf](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/5939ddf85ef740db8896fd475cac8f1c3fae8e8f))
+
+## [6.1.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.0.0...v6.1.0) (2023-07-11)
+
+
+### Features
+
+* Pass through db_instance_master_user_secret_arn ([#502](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/502)) ([f0eb9f3](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/f0eb9f3e14b61478a772dc8bb5d3f83bb0da3294))
+
+## [6.0.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.9.0...v6.0.0) (2023-06-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* Replace random password generation with manage master password, min AWS provider version increased to 5.0, `id` output replaced with `identifier` (#489)
+
+### Features
+
+* Replace random password generation with manage master password, min AWS provider version increased to 5.0, `id` output replaced with `identifier` ([#489](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/489)) ([c66cd73](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/c66cd738f86b9cd0742d9838635970ef7b5743e4))
+
+## [5.9.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.8.0...v5.9.0) (2023-05-03)
+
+
+### Features
+
+* Add output for SQL Server `listener_endpoint` ([#486](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/486)) ([564fae2](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/564fae2f62400e5fd149ed8c34c53d64bf96f9d7))
+
+## [5.8.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.7.0...v5.8.0) (2023-05-03)
+
+
+### Features
+
+* Allow replicas to have a different version than primary ([#491](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/491)) ([7a0542d](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/7a0542d0281b91ee72835ad430edb64dcdb26f51))
+
+## [5.7.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.6.0...v5.7.0) (2023-05-02)
+
+
+### Features
+
+* Add support for Oracle `nchar_character_set_name` ([#487](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/487)) ([c7fd6c5](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/c7fd6c53680236e5afd2562cdfad7d050175b713))
+
 ## [5.6.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.5.0...v5.6.0) (2023-02-17)
 
 
@@ -373,7 +426,7 @@ All notable changes to this project will be documented in this file
 ## [v2.19.0] - 2020-10-15
 
 - fix: Added tflint and fixes in README ([#265](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/265))
-- docs: Change accound to account ([#261](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/261))
+- docs: Change account to account ([#261](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/261))
 
 
 <a name="v2.18.0"></a>
@@ -793,7 +846,7 @@ All notable changes to this project will be documented in this file
 <a name="v1.14.0"></a>
 ## [v1.14.0] - 2018-03-14
 
-- Updated readme with conditional creatino section
+- Updated readme with conditional creation section
 - Enable db_parameter_group_name variable ([#47](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/47))
 
 
@@ -831,7 +884,7 @@ All notable changes to this project will be documented in this file
 <a name="v1.8.0"></a>
 ## [v1.8.0] - 2018-01-23
 
-- Add availability zone to instance ressource module ([#35](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/35))
+- Add availability zone to instance resource module ([#35](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/35))
 
 
 <a name="v1.7.0"></a>
@@ -901,7 +954,7 @@ All notable changes to this project will be documented in this file
 - Merge branch 'master' of https://github.com/terraform-aws-modules/terraform-aws-rds
 - Updated README.md for MySQL RDS example
 - Updated README.md for Postgres RDS example
-- fianl-snapshot_identifier should default to nothing
+- final-snapshot_identifier should default to nothing
 - Add enhanced monitoring example to README, and add current contributors link
 - Merge branch 'master' into final_snapshot_identifier
 - Updated links using upstream path
@@ -931,7 +984,7 @@ All notable changes to this project will be documented in this file
 - Removed unused variable
 - Improved kms_key_id description
 - Cleaned duplicated attributes & variables
-- Merge branch 'encryption' of github.com:fmartingr/terraform-aws-rds into encryption
+- Merge branch 'encryption' of github.com:formatting/terraform-aws-rds into encryption
 - Added parameters to example
 - Added kms_key_id parameter
 - Using `encrypted` to set the db_instance.storage_encrypted

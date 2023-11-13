@@ -22,7 +22,7 @@ variable "use_identifier_prefix" {
 
 variable "allocated_storage" {
   description = "The allocated storage in gigabytes"
-  type        = string
+  type        = number
   default     = null
 }
 
@@ -118,6 +118,21 @@ variable "username" {
 
 variable "password" {
   description = "Password for the master DB user. Note that this may show up in logs, and it will be stored in the state file"
+  type        = string
+  default     = null
+}
+
+variable "manage_master_user_password" {
+  description = "Set to true to allow RDS to manage the master user password in Secrets Manager. Cannot be set if password is provided"
+  type        = bool
+  default     = false
+}
+
+variable "master_user_secret_kms_key_id" {
+  description = <<EOF
+  The key ARN, key ID, alias ARN or alias name for the KMS key to encrypt the master user password secret in Secrets Manager.
+  If not specified, the default KMS key for your Amazon Web Services account is used.
+  EOF
   type        = string
   default     = null
 }
@@ -298,6 +313,12 @@ variable "timezone" {
 
 variable "character_set_name" {
   description = "The character set name to use for DB encoding in Oracle instances. This can't be changed. See Oracle Character Sets Supported in Amazon RDS and Collations and Character Sets for Microsoft SQL Server for more information. This can only be set on creation."
+  type        = string
+  default     = null
+}
+
+variable "nchar_character_set_name" {
+  description = "The national character set is used in the NCHAR, NVARCHAR2, and NCLOB data types for Oracle instances. This can't be changed."
   type        = string
   default     = null
 }

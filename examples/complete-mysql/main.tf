@@ -102,7 +102,7 @@ module "db_default" {
   major_engine_version = "8.0"      # DB option group
   instance_class       = "db.t4g.large"
 
-  allocated_storage = 20
+  allocated_storage = 200
 
   db_name  = "completeMysql"
   username = "complete_mysql"
@@ -135,7 +135,7 @@ module "db_disabled" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.0"
+  version = "~> 5.0"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -152,7 +152,7 @@ module "vpc" {
 
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4.0"
+  version = "~> 5.0"
 
   name        = local.name
   description = "Complete MySQL example security group"

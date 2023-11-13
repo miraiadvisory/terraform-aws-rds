@@ -28,6 +28,11 @@ output "db_instance_endpoint" {
   value       = module.db_instance.db_instance_endpoint
 }
 
+output "db_listener_endpoint" {
+  description = "Specifies the listener connection endpoint for SQL Server Always On"
+  value       = module.db_instance.db_listener_endpoint
+}
+
 output "db_instance_engine" {
   description = "The database engine"
   value       = module.db_instance.db_instance_engine
@@ -43,9 +48,9 @@ output "db_instance_hosted_zone_id" {
   value       = module.db_instance.db_instance_hosted_zone_id
 }
 
-output "db_instance_id" {
-  description = "The RDS instance ID"
-  value       = module.db_instance.db_instance_id
+output "db_instance_identifier" {
+  description = "The RDS instance identifier"
+  value       = module.db_instance.db_instance_identifier
 }
 
 output "db_instance_resource_id" {
@@ -69,19 +74,13 @@ output "db_instance_username" {
   sensitive   = true
 }
 
-output "db_instance_password" {
-  description = "The database password (this password may be old, because Terraform doesn't track it after initial creation)"
-  value       = local.password
-  sensitive   = true
-}
-
 output "db_instance_domain" {
   description = "The ID of the Directory Service Active Directory domain the instance is joined to"
   value       = module.db_instance.db_instance_domain
 }
 
 output "db_instance_domain_iam_role_name" {
-  description = "The name of the IAM role to be used when making API calls to the Directory Service. "
+  description = "The name of the IAM role to be used when making API calls to the Directory Service"
   value       = module.db_instance.db_instance_domain_iam_role_name
 }
 
@@ -93,6 +92,11 @@ output "db_instance_port" {
 output "db_instance_ca_cert_identifier" {
   description = "Specifies the identifier of the CA certificate for the DB instance"
   value       = module.db_instance.db_instance_ca_cert_identifier
+}
+
+output "db_instance_master_user_secret_arn" {
+  description = "The ARN of the master user secret (Only available when manage_master_user_password is set to true)"
+  value       = module.db_instance.db_instance_master_user_secret_arn
 }
 
 output "db_subnet_group_id" {
@@ -133,4 +137,13 @@ output "db_option_group_arn" {
 output "db_instance_cloudwatch_log_groups" {
   description = "Map of CloudWatch log groups created and their attributes"
   value       = module.db_instance.db_instance_cloudwatch_log_groups
+}
+
+################################################################################
+# DB Instance Role Association
+################################################################################
+
+output "db_instance_role_associations" {
+  description = "A map of DB Instance Identifiers and IAM Role ARNs separated by a comma"
+  value       = module.db_instance_role_association
 }

@@ -68,7 +68,8 @@ module "db" {
   create_monitoring_role                = true
 
   # See here for support character sets https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.OracleCharacterSets.html
-  character_set_name = "AL32UTF8"
+  character_set_name       = "AL32UTF8"
+  nchar_character_set_name = "AL16UTF16"
 
   tags = local.tags
 }
@@ -122,7 +123,7 @@ module "db_automated_backups_replication" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.0"
+  version = "~> 5.0"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -139,7 +140,7 @@ module "vpc" {
 
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4.0"
+  version = "~> 5.0"
 
   name        = local.name
   description = "Complete Oracle example security group"

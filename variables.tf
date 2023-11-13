@@ -17,7 +17,7 @@ variable "custom_iam_instance_profile" {
 
 variable "allocated_storage" {
   description = "The allocated storage in gigabytes"
-  type        = string
+  type        = number
   default     = null
 }
 
@@ -138,11 +138,26 @@ variable "username" {
 variable "password" {
   description = <<EOF
   Password for the master DB user. Note that this may show up in logs, and it will be stored in the state file.
-  The password provided will not be used if the variable create_random_password is set to true.
+  The password provided will not be used if `manage_master_user_password` is set to true.
   EOF
   type        = string
   default     = null
   sensitive   = true
+}
+
+variable "manage_master_user_password" {
+  description = "Set to true to allow RDS to manage the master user password in Secrets Manager"
+  type        = bool
+  default     = true
+}
+
+variable "master_user_secret_kms_key_id" {
+  description = <<EOF
+  The key ARN, key ID, alias ARN or alias name for the KMS key to encrypt the master user password secret in Secrets Manager.
+  If not specified, the default KMS key for your Amazon Web Services account is used.
+  EOF
+  type        = string
+  default     = null
 }
 
 variable "port" {
@@ -430,6 +445,12 @@ variable "character_set_name" {
   default     = null
 }
 
+variable "nchar_character_set_name" {
+  description = "The national character set is used in the NCHAR, NVARCHAR2, and NCLOB data types for Oracle instances. This can't be changed."
+  type        = string
+  default     = null
+}
+
 variable "enabled_cloudwatch_logs_exports" {
   description = "List of log types to enable for exporting to CloudWatch logs. If omitted, no logs will be exported. Valid values (depending on engine): alert, audit, error, general, listener, slowquery, trace, postgresql (PostgreSQL), upgrade (PostgreSQL)"
   type        = list(string)
@@ -498,18 +519,6 @@ variable "delete_automated_backups" {
   default     = true
 }
 
-variable "create_random_password" {
-  description = "Whether to create random password for RDS primary cluster"
-  type        = bool
-  default     = true
-}
-
-variable "random_password_length" {
-  description = "Length of random password to create"
-  type        = number
-  default     = 16
-}
-
 variable "network_type" {
   description = "The type of network stack to use"
   type        = string
@@ -542,4 +551,14 @@ variable "putin_khuylo" {
   description = "Do you agree that Putin doesn't respect Ukrainian sovereignty and territorial integrity? More info: https://en.wikipedia.org/wiki/Putin_khuylo!"
   type        = bool
   default     = true
+}
+
+################################################################################
+# DB Instance Role Association
+################################################################################
+
+variable "db_instance_role_associations" {
+  description = "A map of DB instance supported feature name to role association ARNs."
+  type        = map(any)
+  default     = {}
 }

@@ -3,21 +3,11 @@ locals {
   create_db_parameter_group = var.create_db_parameter_group && var.putin_khuylo
   create_db_instance        = var.create_db_instance && var.putin_khuylo
 
-  create_random_password = local.create_db_instance && var.create_random_password
-  password               = local.create_random_password ? random_password.master_password[0].result : var.password
-
   db_subnet_group_name    = var.create_db_subnet_group ? module.db_subnet_group.db_subnet_group_id : var.db_subnet_group_name
   parameter_group_name_id = var.create_db_parameter_group ? module.db_parameter_group.db_parameter_group_id : var.parameter_group_name
 
   create_db_option_group = var.create_db_option_group && var.engine != "postgres"
   option_group           = local.create_db_option_group ? module.db_option_group.db_option_group_id : var.option_group_name
-}
-
-resource "random_password" "master_password" {
-  count = local.create_random_password ? 1 : 0
-
-  length  = var.random_password_length
-  special = false
 }
 
 module "db_subnet_group" {
@@ -84,12 +74,14 @@ module "db_instance" {
 
   db_name                             = var.db_name
   username                            = var.username
-  password                            = local.password
+  password                            = var.manage_master_user_password ? null : var.password
   port                                = var.port
   domain                              = var.domain
   domain_iam_role_name                = var.domain_iam_role_name
   iam_database_authentication_enabled = var.iam_database_authentication_enabled
   custom_iam_instance_profile         = var.custom_iam_instance_profile
+  manage_master_user_password         = var.manage_master_user_password
+  master_user_secret_kms_key_id       = var.master_user_secret_kms_key_id
 
   vpc_security_group_ids = var.vpc_security_group_ids
   db_subnet_group_name   = local.db_subnet_group_name
@@ -132,8 +124,9 @@ module "db_instance" {
   create_monitoring_role               = var.create_monitoring_role
   monitoring_role_permissions_boundary = var.monitoring_role_permissions_boundary
 
-  character_set_name = var.character_set_name
-  timezone           = var.timezone
+  character_set_name       = var.character_set_name
+  nchar_character_set_name = var.nchar_character_set_name
+  timezone                 = var.timezone
 
   enabled_cloudwatch_logs_exports        = var.enabled_cloudwatch_logs_exports
   create_cloudwatch_log_group            = var.create_cloudwatch_log_group
@@ -149,4 +142,14 @@ module "db_instance" {
   s3_import                = var.s3_import
 
   tags = merge(var.tags, var.db_instance_tags)
+}
+
+module "db_instance_role_association" {
+  source = "./modules/db_instance_role_association"
+
+  for_each = { for k, v in var.db_instance_role_associations : k => v if var.create_db_instance }
+
+  feature_name           = each.key
+  role_arn               = each.value
+  db_instance_identifier = module.db_instance.db_instance_identifier
 }
