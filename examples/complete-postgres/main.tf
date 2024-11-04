@@ -30,11 +30,12 @@ module "db" {
   identifier = local.name
 
   # All available versions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts
-  engine               = "postgres"
-  engine_version       = "14"
-  family               = "postgres14" # DB parameter group
-  major_engine_version = "14"         # DB option group
-  instance_class       = "db.t4g.large"
+  engine                   = "postgres"
+  engine_version           = "14"
+  engine_lifecycle_support = "open-source-rds-extended-support-disabled"
+  family                   = "postgres14" # DB parameter group
+  major_engine_version     = "14"         # DB option group
+  instance_class           = "db.t4g.large"
 
   allocated_storage     = 20
   max_allocated_storage = 100
@@ -45,6 +46,17 @@ module "db" {
   db_name  = "completePostgresql"
   username = "complete_postgresql"
   port     = 5432
+
+  # Setting manage_master_user_password_rotation to false after it
+  # has previously been set to true disables automatic rotation
+  # however using an initial value of false (default) does not disable
+  # automatic rotation and rotation will be handled by RDS.
+  # manage_master_user_password_rotation allows users to configure
+  # a non-default schedule and is not meant to disable rotation
+  # when initially creating / enabling the password management feature
+  manage_master_user_password_rotation              = true
+  master_user_password_rotate_immediately           = false
+  master_user_password_rotation_schedule_expression = "rate(15 days)"
 
   multi_az               = true
   db_subnet_group_name   = module.vpc.database_subnet_group
@@ -84,6 +96,9 @@ module "db" {
   }
   db_parameter_group_tags = {
     "Sensitive" = "low"
+  }
+  cloudwatch_log_group_tags = {
+    "Sensitive" = "high"
   }
 }
 

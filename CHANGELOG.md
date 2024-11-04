@@ -2,6 +2,109 @@
 
 All notable changes to this project will be documented in this file.
 
+## [6.10.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.9.0...v6.10.0) (2024-10-16)
+
+
+### Features
+
+* Support `cloudwatch_log_group_tags` parameter ([#571](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/571)) ([73e33fe](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/73e33feba5d907801791168ebf6d3132fbd646f5))
+
+
+### Bug Fixes
+
+* Update CI workflow versions to latest ([#570](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/570)) ([220cc85](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/220cc85dcdc8eb63772e25526db693dd563d40a1))
+
+## [6.9.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.8.0...v6.9.0) (2024-08-19)
+
+
+### Features
+
+* Support `skip_destroy` for option and param groups and add `upgrade_storage_config` for replicas ([#559](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/559)) ([3f73565](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/3f73565f673d38bffac3c339f436782cd79f01fb))
+
+## [6.8.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.7.0...v6.8.0) (2024-07-20)
+
+
+### Features
+
+* Support `engine_lifecycle_support` ([#558](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/558)) ([eae7230](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/eae723015b139311eb7785fa4f4a02d8fa9d55b2))
+
+## [6.7.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.6.0...v6.7.0) (2024-06-12)
+
+
+### Features
+
+* Added cloudwatch log group `skip_destroy` and `log_group_class` ([#553](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/553)) ([12f4e91](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/12f4e91f1a4f3ee48b91d222fcae5c51bbe7ab29))
+
+## [6.6.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.5.5...v6.6.0) (2024-05-03)
+
+
+### Features
+
+* Support `dedicated_log_volume` ([#549](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/549)) ([49f87e0](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/49f87e0d35a4cebafb1b2a123abf21d0909c4bf1))
+
+## [6.5.5](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.5.4...v6.5.5) (2024-04-22)
+
+
+### Bug Fixes
+
+* Add upgrade doc and fix variable description ([#548](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/548)) ([97f6261](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/97f6261ac90c6c271964185538d8d9e19728bd54))
+
+## [6.5.4](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.5.3...v6.5.4) (2024-03-21)
+
+
+### Bug Fixes
+
+* Restore aws to required providers ([#546](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/546)) ([7f37ff8](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/7f37ff8c160e819ae6766d6bf25f0fb8cec978f5))
+
+## [6.5.3](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.5.2...v6.5.3) (2024-03-19)
+
+
+### Bug Fixes
+
+* Separate `db_instance_tags` from merged `tags` sub-module input ([#544](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/544)) ([89a5763](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/89a5763625cc60ad1d8b9afd13cfda916e88996a))
+
+## [6.5.2](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.5.1...v6.5.2) (2024-03-07)
+
+
+### Bug Fixes
+
+* Update CI workflow versions to remove deprecated runtime warnings ([#542](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/542)) ([079605a](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/079605ad6b55d201393bb8225f142129e2fc2195))
+
+### [6.5.1](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.5.0...v6.5.1) (2024-03-04)
+
+
+### Bug Fixes
+
+* Allow managing `allocated_storage` for replicas ([#534](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/534)) ([7b02569](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/7b02569468142ee054441ccaeaad9a196da74bb6))
+
+## [6.5.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.4.0...v6.5.0) (2024-03-02)
+
+
+### Features
+
+* Self managed active directory arguments ([#541](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/541)) ([c85d3b0](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/c85d3b0e372c725f2953b180d12b917f72df360f))
+
+## [6.4.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.3.1...v6.4.0) (2024-02-02)
+
+
+### Features
+
+* Secretsmanager secret rotation for master user password ([#537](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/537)) ([93c85ef](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/93c85efddeac23ce1dbf96f7e53d8326bca71e25))
+
+### [6.3.1](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.3.0...v6.3.1) (2024-01-10)
+
+
+### Bug Fixes
+
+* Align the default value of `manage_master_user_password` in the instance sub-module with the root module ([#531](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/531)) ([8b90616](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/8b906169527162faa8fc928aa9b5edf6cfbc1f5e))
+
+## [6.3.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.2.0...v6.3.0) (2023-11-13)
+
+
+### Features
+
+* Blue/green deployment for postgres ([#517](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/517)) ([9c18851](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/9c188514304cba0c05bfd88d219e676cb518e710))
+
 ## [6.2.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.1.1...v6.2.0) (2023-10-23)
 
 

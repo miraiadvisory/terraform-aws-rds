@@ -80,8 +80,32 @@ variable "domain" {
   default     = null
 }
 
+variable "domain_auth_secret_arn" {
+  description = "(Optional, but required if domain_fqdn is provided) The ARN for the Secrets Manager secret with the self managed Active Directory credentials for the user joining the domain. Conflicts with domain and domain_iam_role_name."
+  type        = string
+  default     = null
+}
+
+variable "domain_dns_ips" {
+  description = "(Optional, but required if domain_fqdn is provided) The IPv4 DNS IP addresses of your primary and secondary self managed Active Directory domain controllers. Two IP addresses must be provided. If there isn't a secondary domain controller, use the IP address of the primary domain controller for both entries in the list. Conflicts with domain and domain_iam_role_name."
+  type        = list(string)
+  default     = null
+}
+
+variable "domain_fqdn" {
+  description = "The fully qualified domain name (FQDN) of the self managed Active Directory domain. Conflicts with domain and domain_iam_role_name."
+  type        = string
+  default     = null
+}
+
 variable "domain_iam_role_name" {
   description = "(Required if domain is provided) The name of the IAM role to be used when making API calls to the Directory Service"
+  type        = string
+  default     = null
+}
+
+variable "domain_ou" {
+  description = "(Optional, but required if domain_fqdn is provided) The self managed Active Directory organizational unit for your DB instance to join. Conflicts with domain and domain_iam_role_name."
   type        = string
   default     = null
 }
@@ -94,6 +118,12 @@ variable "engine" {
 
 variable "engine_version" {
   description = "The engine version to use"
+  type        = string
+  default     = null
+}
+
+variable "engine_lifecycle_support" {
+  description = "The life cycle type for this DB instance. This setting applies only to RDS for MySQL and RDS for PostgreSQL. Valid values are `open-source-rds-extended-support`, `open-source-rds-extended-support-disabled`. Default value is `open-source-rds-extended-support`."
   type        = string
   default     = null
 }
@@ -125,7 +155,7 @@ variable "password" {
 variable "manage_master_user_password" {
   description = "Set to true to allow RDS to manage the master user password in Secrets Manager. Cannot be set if password is provided"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "master_user_secret_kms_key_id" {
@@ -299,6 +329,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "db_instance_tags" {
+  description = "A map of additional tags for the DB instance"
+  type        = map(string)
+  default     = {}
+}
+
 variable "option_group_name" {
   description = "Name of the DB option group to associate."
   type        = string
@@ -396,6 +432,18 @@ variable "network_type" {
   default     = null
 }
 
+variable "dedicated_log_volume" {
+  description = "Use a dedicated log volume (DLV) for the DB instance. Requires Provisioned IOPS."
+  type        = bool
+  default     = false
+}
+
+variable "upgrade_storage_config" {
+  description = "Whether to upgrade the storage file system configuration on the read replica. Can only be set with replicate_source_db."
+  type        = bool
+  default     = null
+}
+
 ################################################################################
 # CloudWatch Log Group
 ################################################################################
@@ -414,6 +462,58 @@ variable "cloudwatch_log_group_retention_in_days" {
 
 variable "cloudwatch_log_group_kms_key_id" {
   description = "The ARN of the KMS Key to use when encrypting log data"
+  type        = string
+  default     = null
+}
+
+variable "cloudwatch_log_group_skip_destroy" {
+  description = "Set to true if you do not wish the log group (and any logs it may contain) to be deleted at destroy time, and instead just remove the log group from the Terraform state"
+  type        = bool
+  default     = null
+}
+
+variable "cloudwatch_log_group_class" {
+  description = "Specified the log class of the log group. Possible values are: STANDARD or INFREQUENT_ACCESS"
+  type        = string
+  default     = null
+}
+
+variable "cloudwatch_log_group_tags" {
+  description = "Additional tags for the CloudWatch log group(s)"
+  type        = map(string)
+  default     = {}
+}
+
+################################################################################
+# Managed Secret Rotation
+################################################################################
+
+variable "manage_master_user_password_rotation" {
+  description = "Whether to manage the master user password rotation. By default, false on creation, rotation is managed by RDS. Setting this value to false after previously having been set to true will disable automatic rotation."
+  type        = bool
+  default     = false
+}
+
+variable "master_user_password_rotate_immediately" {
+  description = "Specifies whether to rotate the secret immediately or wait until the next scheduled rotation window."
+  type        = bool
+  default     = null
+}
+
+variable "master_user_password_rotation_automatically_after_days" {
+  description = "Specifies the number of days between automatic scheduled rotations of the secret. Either automatically_after_days or schedule_expression must be specified."
+  type        = number
+  default     = null
+}
+
+variable "master_user_password_rotation_duration" {
+  description = "The length of the rotation window in hours. For example, 3h for a three hour window."
+  type        = string
+  default     = null
+}
+
+variable "master_user_password_rotation_schedule_expression" {
+  description = "A cron() or rate() expression that defines the schedule for rotating your secret. Either automatically_after_days or schedule_expression must be specified."
   type        = string
   default     = null
 }
