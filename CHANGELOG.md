@@ -2,6 +2,49 @@
 
 All notable changes to this project will be documented in this file.
 
+## [7.0.1](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v7.0.0...v7.0.1) (2026-01-05)
+
+### Bug Fixes
+
+* Update min required terraform version to 1.11.1 ([#614](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/614)) ([41bbb39](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/41bbb39acf2778401eec3020039c40352e826e8c))
+
+## [7.0.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.13.1...v7.0.0) (2025-12-29)
+
+### ⚠ BREAKING CHANGES
+
+* Upgrade min required AWS provider and Terraform version to `6.27` and `1.11` respectively (#612)
+
+### Features
+
+* Upgrade min required AWS provider and Terraform version to `6.27` and `1.11` respectively ([#612](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/612)) ([90914f4](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/90914f4d9d7fc801a24361a34130734ba1cb645e))
+
+## [6.13.1](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.13.0...v6.13.1) (2025-10-21)
+
+### Bug Fixes
+
+* Update CI workflow versions to latest ([#610](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/610)) ([c742640](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/c7426407c6cec31425301306111797c89c626eb7))
+
+## [6.13.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.12.0...v6.13.0) (2025-10-01)
+
+
+### Features
+
+* Add Terragrunt wrappers ([#607](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/607)) ([b34450e](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/b34450e7a6712f61353e94e45de34bab6e95f272))
+
+## [6.12.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.11.0...v6.12.0) (2025-04-21)
+
+
+### Features
+
+* Change `final_snapshot_identifier` when `snapshot_identifier` changes ([#591](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/591)) ([9122d19](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/9122d19b2ff1e9114ae328fec988715cdd56bf5f))
+
+## [6.11.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.10.0...v6.11.0) (2025-03-21)
+
+
+### Features
+
+* Support `db_insights_mode` ([#590](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/590)) ([5ea5035](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/5ea5035e825f13da17793ee193131ab3587770d7))
+
 ## [6.10.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v6.9.0...v6.10.0) (2024-10-16)
 
 

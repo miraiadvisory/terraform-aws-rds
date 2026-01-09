@@ -136,7 +136,7 @@ resource "aws_iam_role_policy_attachment" "rds_directory_services" {
 }
 
 ################################################################################
-# AWS Directory Service (Acitve Directory)
+# AWS Directory Service (Active Directory)
 ################################################################################
 
 resource "aws_directory_service_directory" "demo" {
@@ -160,7 +160,7 @@ resource "aws_directory_service_directory" "demo" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   name = local.name
   cidr = local.vpc_cidr
